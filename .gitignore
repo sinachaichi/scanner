@@ -1,0 +1,47 @@
+# ── Credentials and secrets ───────────────────────────────────────────────────
+# NOTE: git does NOT support trailing comments on a pattern line — the comment
+# becomes part of the pattern. Keep explanations on their own comment lines.
+.env
+.env.*
+!.env.example
+# Telegram session files are login-equivalent to the account — never commit.
+*.session
+*.session-journal
+
+# ── Database ──────────────────────────────────────────────────────────────────
+db.sqlite3
+
+# ── Python ────────────────────────────────────────────────────────────────────
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# ── Virtual environment ───────────────────────────────────────────────────────
+.venv/
+venv/
+
+# ── Django ────────────────────────────────────────────────────────────────────
+staticfiles/
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+logs/
+logs_*.out
+
+# ── Testing ───────────────────────────────────────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ── xray binary (downloaded at install time per platform) ────────────────────
+xray
+xray.exe
+
+# ── IDE ───────────────────────────────────────────────────────────────────────
+.idea/
+.vscode/
+*.swp
+*.swo

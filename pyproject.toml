@@ -1,0 +1,46 @@
+[tool.pytest.ini_options]
+DJANGO_SETTINGS_MODULE = "config.settings_test"
+pythonpath = ["."]
+testpaths = ["tests"]
+addopts = "--cov=scanner --cov-report=term-missing --cov-fail-under=80"
+
+[tool.coverage.run]
+source = ["scanner"]
+# The gate covers the modules where real algorithmic logic lives: URI parsing,
+# TCP/xray probing, ranking, the async scan pipeline, and source fetching.
+# Excluded are the integration layers whose behaviour is the framework's, not
+# ours — Django ORM persistence (repository), the GitHub HTTP push (actions),
+# views, Celery task wrappers, the composition root (engine), URLs, admin, and
+# migrations. Those are better verified by integration tests than by chasing
+# unit-coverage on glue.
+omit = [
+    "scanner/migrations/*",
+    "scanner/apps.py",
+    "scanner/admin.py",
+    "scanner/views.py",
+    "scanner/tasks.py",
+    "scanner/engine.py",
+    "scanner/urls.py",
+    "scanner/repository.py",
+    "scanner/actions.py",
+    "scanner/__init__.py",
+]
+
+[tool.coverage.report]
+# Lines that are intentionally not exercised by unit tests.
+exclude_lines = [
+    "pragma: no cover",
+    "if __name__ == .__main__.:",
+    "raise NotImplementedError",
+    "\\.\\.\\.",  # abstractmethod bodies
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+# Django generates migrations; we don't hand-edit them to satisfy the linter.
+extend-exclude = ["*/migrations/*"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "W"]
+ignore = ["N806"]  # allow uppercase in function bodies (xray config keys)
